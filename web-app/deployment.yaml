@@ -1,0 +1,27 @@
+kind: "Deployment"
+apiVersion: "apps/v1"
+metadata:
+  name: "apache-pod"
+  labels:
+    app: demo-app
+spec:
+  selector:
+    matchLabels:
+      app: "apache-pod"
+  template:
+    metadata:
+      labels:
+        app: "apache-pod"
+    spec:
+      containers:
+      - name: apache-pod
+        image:  registry.access.redhat.com/rhscl/httpd-24-rhel7
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+  replicas: 1
