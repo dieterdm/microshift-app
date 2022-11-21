@@ -24,4 +24,12 @@ spec:
           runAsNonRoot: true
           seccompProfile:
             type: RuntimeDefault
+        volumeMounts:
+        - name: pvc-demo
+          mountPath: /var/www/html
+      volumes:
+      - name: pvc-demo
+        persistentVolumeClaim:
+          claimName: pvc-demo
+
   replicas: 1
