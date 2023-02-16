@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: 'measurement-stub-producer'
+  annotations: {}
+  labels:
+    app: measurement-stub-producer
+    app.kubernetes.io/component: measurement-stub-producer
+    app.kubernetes.io/instance: measurement-stub-producer
+    app.kubernetes.io/name: measurement-stub-producer
+    app.kubernetes.io/part-of: measurement-stub-producer
+    app.openshift.io/runtime-namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: measurement-stub-producer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: measurement-stub-producer
+        app.kubernetes.io/component: measurement-stub-producer
+        app.kubernetes.io/name: measurement-stub-producer
+        deployment: measurement-stub-producer
+    spec:
+      containers:
+        - name: container
+          image: >-
+            quay.io/appdev_playground/weather-service-kafka-producer:35.0.2-SNAPSHOT
+          ports:
+            - containerPort: 9081
+              protocol: TCP
+          env: []
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: false
+            seccompProfile:
+              type: RuntimeDefault
+      imagePullSecrets: []
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+
